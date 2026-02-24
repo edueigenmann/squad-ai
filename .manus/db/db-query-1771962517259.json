@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, title, status, createdAt FROM projects ORDER BY createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3Kp8yFx5h7Dj2LP.d09ee787fb9c --database TqQtnraiAVpQoSdrGnDp98 --execute SELECT id, title, status, createdAt FROM projects ORDER BY createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "30001",
+      "title": "Validador de CPF",
+      "status": "running",
+      "createdAt": "2026-02-24 19:46:25"
+    },
+    {
+      "id": "2",
+      "title": "Test Project",
+      "status": "pending",
+      "createdAt": "2026-02-16 14:59:40"
+    },
+    {
+      "id": "5",
+      "title": "Status Test",
+      "status": "running",
+      "createdAt": "2026-02-16 14:59:40"
+    },
+    {
+      "id": "4",
+      "title": "DB Test Project",
+      "status": "pending",
+      "createdAt": "2026-02-16 14:59:40"
+    },
+    {
+      "id": "3",
+      "title": "Test Project",
+      "status": "pending",
+      "createdAt": "2026-02-16 14:59:40"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tstatus\tcreatedAt\n30001\tValidador de CPF\trunning\t2026-02-24 19:46:25\n2\tTest Project\tpending\t2026-02-16 14:59:40\n5\tStatus Test\trunning\t2026-02-16 14:59:40\n4\tDB Test Project\tpending\t2026-02-16 14:59:40\n3\tTest Project\tpending\t2026-02-16 14:59:40\n",
+  "stderr": "",
+  "execution_time_ms": 183
+}

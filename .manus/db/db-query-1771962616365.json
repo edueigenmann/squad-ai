@@ -1,0 +1,38 @@
+{
+  "query": "SELECT projectId, type, version, LENGTH(content) as content_size, createdAt FROM project_outputs WHERE projectId = 30001 ORDER BY type, version;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3Kp8yFx5h7Dj2LP.d09ee787fb9c --database TqQtnraiAVpQoSdrGnDp98 --execute SELECT projectId, type, version, LENGTH(content) as content_size, createdAt FROM project_outputs WHERE projectId = 30001 ORDER BY type, version;",
+  "rows": [
+    {
+      "projectId": "30001",
+      "type": "specification",
+      "version": "1",
+      "content_size": "8444",
+      "createdAt": "2026-02-24 19:49:04"
+    },
+    {
+      "projectId": "30001",
+      "type": "tests",
+      "version": "1",
+      "content_size": "8995",
+      "createdAt": "2026-02-24 19:49:04"
+    },
+    {
+      "projectId": "30001",
+      "type": "implementation",
+      "version": "3",
+      "content_size": "3597",
+      "createdAt": "2026-02-24 19:49:04"
+    },
+    {
+      "projectId": "30001",
+      "type": "review",
+      "version": "3",
+      "content_size": "6596",
+      "createdAt": "2026-02-24 19:49:04"
+    }
+  ],
+  "messages": [],
+  "stdout": "projectId\ttype\tversion\tcontent_size\tcreatedAt\n30001\tspecification\t1\t8444\t2026-02-24 19:49:04\n30001\ttests\t1\t8995\t2026-02-24 19:49:04\n30001\timplementation\t3\t3597\t2026-02-24 19:49:04\n30001\treview\t3\t6596\t2026-02-24 19:49:04\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

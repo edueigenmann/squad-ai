@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, title, status, iterationCount, isApproved, createdAt, updatedAt FROM projects WHERE id = 30001;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3Kp8yFx5h7Dj2LP.d09ee787fb9c --database TqQtnraiAVpQoSdrGnDp98 --execute SELECT id, title, status, iterationCount, isApproved, createdAt, updatedAt FROM projects WHERE id = 30001;",
+  "rows": [
+    {
+      "id": "30001",
+      "title": "Validador de CPF",
+      "status": "completed",
+      "iterationCount": "3",
+      "isApproved": "0",
+      "createdAt": "2026-02-24 19:46:25",
+      "updatedAt": "2026-02-24 19:49:05"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tstatus\titerationCount\tisApproved\tcreatedAt\tupdatedAt\n30001\tValidador de CPF\tcompleted\t3\t0\t2026-02-24 19:46:25\t2026-02-24 19:49:05\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}
