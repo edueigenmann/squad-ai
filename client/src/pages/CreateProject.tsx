@@ -15,37 +15,21 @@ export default function CreateProject() {
   const [featureRequest, setFeatureRequest] = useState("");
 
   const createMutation = trpc.projects.create.useMutation({
-    onMutate: (variables) => {
-      console.log("[CreateProject] mutate:start", {
-        titleLength: variables.title.length,
-        featureRequestLength: variables.featureRequest.length,
-      });
-    },
     onSuccess: (data) => {
-      console.log("[CreateProject] mutate:success", data);
+      toast.success("Projeto criado com sucesso!");
       setLocation(`/project/${data.projectId}`);
     },
     onError: (error) => {
-      console.error("[CreateProject] mutate:error", error);
       toast.error(error.message || "Erro ao criar projeto");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("[CreateProject] submit", {
-      titleLength: title.trim().length,
-      featureRequestLength: featureRequest.trim().length,
-      isPending: createMutation.isPending,
-    });
-
     if (!title.trim() || !featureRequest.trim()) {
-      console.warn("[CreateProject] submit blocked: missing fields");
       toast.error("Preencha todos os campos");
       return;
     }
-
-    console.log("[CreateProject] submit -> mutate");
     createMutation.mutate({ title, featureRequest });
   };
 
@@ -162,7 +146,6 @@ Implementar uma função que calcula o fatorial de um número...`}
                     </>
                   )}
                 </Button>
-                <p className="text-xs text-muted-foreground">Mutation: {createMutation.isPending ? "enviando" : "idle"}</p>
               </form>
             </CardContent>
           </Card>
@@ -171,8 +154,8 @@ Implementar uma função que calcula o fatorial de um número...`}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Exemplos Rápidos</h2>
             <div className="grid md:grid-cols-2 gap-4">
-              {exampleRequests.map((example) => (
-                <Card key={example.title} className="cursor-pointer hover:border-primary transition-colors" onClick={() => loadExample(example)}>
+              {exampleRequests.map((example, idx) => (
+                <Card key={idx} className="cursor-pointer hover:border-primary transition-colors" onClick={() => loadExample(example)}>
                   <CardHeader>
                     <CardTitle className="text-base">{example.title}</CardTitle>
                     <CardDescription className="line-clamp-3 text-xs">{example.request}</CardDescription>

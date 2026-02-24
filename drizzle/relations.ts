@@ -1,1 +1,1 @@
-// Drizzle ORM relations removed.
+import {} from "./schema";

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,10 @@ import { toast } from "sonner";
 import { ArrowLeft, CheckCircle2, Circle, Download, Loader2, XCircle } from "lucide-react";
 import { Streamdown } from "streamdown";
 
-type TabValue = "specification" | "tests" | "implementation" | "review";
-
 export default function ProjectExecution() {
   const [, params] = useRoute("/project/:id");
   const [, setLocation] = useLocation();
   const projectId = params?.id ? parseInt(params.id) : 0;
-  const [activeTab, setActiveTab] = useState<TabValue>("specification");
 
   const { data, isLoading, refetch } = trpc.projects.getById.useQuery(
     { projectId },
@@ -78,22 +75,6 @@ export default function ProjectExecution() {
   const testsOutput = outputs.find((o) => o.type === "tests");
   const implOutput = outputs.find((o) => o.type === "implementation");
   const reviewOutput = outputs.find((o) => o.type === "review");
-
-  const availableTabs = useMemo<TabValue[]>(() => {
-    const tabs: TabValue[] = [];
-    if (specOutput) tabs.push("specification");
-    if (testsOutput) tabs.push("tests");
-    if (implOutput) tabs.push("implementation");
-    if (reviewOutput) tabs.push("review");
-    return tabs;
-  }, [specOutput, testsOutput, implOutput, reviewOutput]);
-
-  useEffect(() => {
-    if (!availableTabs.length) return;
-    if (!availableTabs.includes(activeTab)) {
-      setActiveTab(availableTabs[0]);
-    }
-  }, [availableTabs, activeTab]);
 
   const statusConfig = {
     pending: { label: "Pendente", icon: Circle, color: "text-muted-foreground" },
@@ -185,7 +166,7 @@ export default function ProjectExecution() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabValue)} className="w-full">
+              <Tabs defaultValue="specification" className="w-full">
                 <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="specification" disabled={!specOutput}>
                     Especificação
@@ -201,93 +182,77 @@ export default function ProjectExecution() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="specification" className="space-y-4">
-                  {specOutput ? (
-                    <>
-                      <div className="flex justify-end">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDownload("specification", specOutput.content, "especificacao.md")}
-                        >
-                          <Download className="w-4 h-4 mr-2" />
-                          Baixar
-                        </Button>
-                      </div>
-                      <div className="prose prose-invert max-w-none">
-                        <Streamdown>{specOutput.content}</Streamdown>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Ainda não disponível.</p>
-                  )}
-                </TabsContent>
+                {specOutput && (
+                  <TabsContent value="specification" className="space-y-4">
+                    <div className="flex justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownload("specification", specOutput.content, "especificacao.md")}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Baixar
+                      </Button>
+                    </div>
+                    <div className="prose prose-invert max-w-none">
+                      <Streamdown>{specOutput.content}</Streamdown>
+                    </div>
+                  </TabsContent>
+                )}
 
-                <TabsContent value="tests" className="space-y-4">
-                  {testsOutput ? (
-                    <>
-                      <div className="flex justify-end">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDownload("tests", testsOutput.content, "test_feature.py")}
-                        >
-                          <Download className="w-4 h-4 mr-2" />
-                          Baixar
-                        </Button>
-                      </div>
-                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                        <code className="text-sm">{testsOutput.content}</code>
-                      </pre>
-                    </>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Ainda não disponível.</p>
-                  )}
-                </TabsContent>
+                {testsOutput && (
+                  <TabsContent value="tests" className="space-y-4">
+                    <div className="flex justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownload("tests", testsOutput.content, "test_feature.py")}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Baixar
+                      </Button>
+                    </div>
+                    <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                      <code className="text-sm">{testsOutput.content}</code>
+                    </pre>
+                  </TabsContent>
+                )}
 
-                <TabsContent value="implementation" className="space-y-4">
-                  {implOutput ? (
-                    <>
-                      <div className="flex justify-end">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDownload("implementation", implOutput.content, "feature_module.py")}
-                        >
-                          <Download className="w-4 h-4 mr-2" />
-                          Baixar
-                        </Button>
-                      </div>
-                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                        <code className="text-sm">{implOutput.content}</code>
-                      </pre>
-                    </>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Ainda não disponível.</p>
-                  )}
-                </TabsContent>
+                {implOutput && (
+                  <TabsContent value="implementation" className="space-y-4">
+                    <div className="flex justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownload("implementation", implOutput.content, "feature_module.py")}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Baixar
+                      </Button>
+                    </div>
+                    <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                      <code className="text-sm">{implOutput.content}</code>
+                    </pre>
+                  </TabsContent>
+                )}
 
-                <TabsContent value="review" className="space-y-4">
-                  {reviewOutput ? (
-                    <>
-                      <div className="flex justify-end">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDownload("review", reviewOutput.content, "revisao.md")}
-                        >
-                          <Download className="w-4 h-4 mr-2" />
-                          Baixar
-                        </Button>
-                      </div>
-                      <div className="prose prose-invert max-w-none">
-                        <Streamdown>{reviewOutput.content}</Streamdown>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Ainda não disponível.</p>
-                  )}
-                </TabsContent>
+                {reviewOutput && (
+                  <TabsContent value="review" className="space-y-4">
+                    <div className="flex justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownload("review", reviewOutput.content, "revisao.md")}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Baixar
+                      </Button>
+                    </div>
+                    <div className="prose prose-invert max-w-none">
+                      <Streamdown>{reviewOutput.content}</Streamdown>
+                    </div>
+                  </TabsContent>
+                )}
               </Tabs>
             </CardContent>
           </Card>
