@@ -16,20 +16,35 @@ export default function CreateProject() {
 
   const createMutation = trpc.projects.create.useMutation({
     onSuccess: (data) => {
+      console.log("[CreateProject] Projeto criado com sucesso:", data);
       toast.success("Projeto criado com sucesso!");
       setLocation(`/project/${data.projectId}`);
     },
     onError: (error) => {
+      console.error("[CreateProject] Erro ao criar projeto:", error);
       toast.error(error.message || "Erro ao criar projeto");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[CreateProject] handleSubmit chamado");
+    console.log("[CreateProject] Título:", title);
+    console.log("[CreateProject] Descrição (tamanho):", featureRequest.length, "caracteres");
+    
     if (!title.trim() || !featureRequest.trim()) {
+      console.warn("[CreateProject] Campos vazios");
       toast.error("Preencha todos os campos");
       return;
     }
+    
+    if (featureRequest.length < 10) {
+      console.warn("[CreateProject] Descrição muito curta");
+      toast.error("A descrição deve ter pelo menos 10 caracteres");
+      return;
+    }
+    
+    console.log("[CreateProject] Chamando mutation...");
     createMutation.mutate({ title, featureRequest });
   };
 
